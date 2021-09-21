@@ -152,7 +152,7 @@ class LivySession(ObjectWithGuid):
             material_directory = os.environ.get('MATERIAL_DIRECTORY')
             for filename in os.listdir(material_directory):
                 with open(material_directory + "/" + filename, "rb") as f:
-                    self.properties["cert"][filename] = f.read()
+                    self.properties["cert"][filename] = str(f.read())
 
             r = self._http_client.post_session(self.properties)
             self.id = r[u"id"]

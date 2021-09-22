@@ -152,10 +152,10 @@ class LivySession(ObjectWithGuid):
             self.properties["cert"] = {}
             material_directory = os.environ.get('MATERIAL_DIRECTORY')
             for filename in os.listdir(material_directory):
-                if filename.encode(".key"):
+                if filename.endswith(".key"):
                     with open(material_directory + "/" + filename, "r") as f:
                         self.properties["cert"][filename] = f.read()
-                elif filename.encode(".jks"):
+                elif filename.endswith(".jks"):
                     with open(material_directory + "/" + filename, "rb") as f:
                         base64_bytes = base64.b64encode(f.read())
                         base64_message = base64_bytes.decode('ascii')

@@ -149,17 +149,18 @@ class LivySession(ObjectWithGuid):
                 if 'hops.util' in sys.modules:
                     util.attach_jupyter_configuration_to_notebook(kernel_id)
 
-            self.properties["cert"] = {}
+            self.properties['cert'] = {}
             material_directory = os.environ.get('MATERIAL_DIRECTORY')
+            self.properties['conf']['MATERIAL_DIRECTORY'] = material_directory
             for filename in os.listdir(material_directory):
-                if filename.endswith(".key"):
-                    with open(material_directory + "/" + filename, "r") as f:
-                        self.properties["cert"][filename] = f.read()
-                elif filename.endswith(".jks"):
-                    with open(material_directory + "/" + filename, "rb") as f:
+                if filename.endswith('.key'):
+                    with open(material_directory + '/' + filename, 'r') as f:
+                        self.properties['cert'][filename] = f.read()
+                elif filename.endswith('.jks'):
+                    with open(material_directory + '/' + filename, 'rb') as f:
                         base64_bytes = base64.b64encode(f.read())
                         base64_message = base64_bytes.decode('ascii')
-                        self.properties["cert"][filename] = base64_message
+                        self.properties['cert'][filename] = base64_message
 
             r = self._http_client.post_session(self.properties)
             self.id = r[u"id"]

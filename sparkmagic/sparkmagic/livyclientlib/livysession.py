@@ -151,7 +151,6 @@ class LivySession(ObjectWithGuid):
 
             self.properties['cert'] = {}
             material_directory = os.environ.get('MATERIAL_DIRECTORY')
-            self.properties['conf']['MATERIAL_DIRECTORY'] = material_directory
             for filename in os.listdir(material_directory):
                 if filename.endswith('.key'):
                     with open(material_directory + '/' + filename, 'r') as f:

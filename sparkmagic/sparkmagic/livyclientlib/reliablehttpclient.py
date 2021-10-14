@@ -73,6 +73,7 @@ class ReliableHttpClient(object):
                         r = function(url, headers=self._headers, auth=self._auth,
                                      data=json.dumps(data), verify=self.verify_ssl)
             except requests.exceptions.RequestException as e:
+                print(e)
                 error = True
                 r = None
                 status = None

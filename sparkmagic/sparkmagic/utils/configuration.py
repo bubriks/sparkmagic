@@ -162,7 +162,7 @@ def resource_limit_mitigation_suggestion():
 
 @_with_override
 def ignore_ssl_errors():
-    return False
+    return True
 
 
 @_with_override

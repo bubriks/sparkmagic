@@ -63,23 +63,17 @@ class ReliableHttpClient(object):
             try:
                 if self._endpoint.auth == constants.NO_AUTH:
                     if data is None:
-                        print(1)
                         r = function(url, headers=self._headers, verify=self.verify_ssl)
                     else:
-                        print(2)
-                        print(self.verify_ssl)
+                        print(url)
                         r = function(url, headers=self._headers, data=json.dumps(data), verify=self.verify_ssl)
                 else:
                     if data is None:
-                        print(3)
                         r = function(url, headers=self._headers, auth=self._auth, verify=self.verify_ssl)
                     else:
-                        print(4)
                         r = function(url, headers=self._headers, auth=self._auth,
                                      data=json.dumps(data), verify=self.verify_ssl)
             except requests.exceptions.RequestException as e:
-                print(url)
-                print(e)
                 error = True
                 r = None
                 status = None

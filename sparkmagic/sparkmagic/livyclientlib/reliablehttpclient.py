@@ -65,7 +65,6 @@ class ReliableHttpClient(object):
                     if data is None:
                         r = function(url, headers=self._headers, verify=self.verify_ssl)
                     else:
-                        print(url)
                         r = function(url, headers=self._headers, data=json.dumps(data), verify=self.verify_ssl)
                 else:
                     if data is None:

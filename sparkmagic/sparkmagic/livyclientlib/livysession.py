@@ -144,8 +144,8 @@ class LivySession(ObjectWithGuid):
             connection_file = os.path.basename(ipykernel.get_connection_file())
             if 'kernel' in connection_file:
                 kernel_id = connection_file.split('-', 1)[1].split('.')[0]
-                self.properties['conf']['spark.yarn.appMasterEnv.HOPSWORKS_KERNEL_ID'] = 1
-                self.properties['conf']['spark.executorEnv.HOPSWORKS_KERNEL_ID'] = 1
+                self.properties['conf']['spark.yarn.appMasterEnv.HOPSWORKS_KERNEL_ID'] = kernel_id
+                self.properties['conf']['spark.executorEnv.HOPSWORKS_KERNEL_ID'] = kernel_id
                 if 'hops.util' in sys.modules:
                     util.attach_jupyter_configuration_to_notebook(kernel_id)
 

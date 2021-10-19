@@ -144,19 +144,20 @@ class LivySession(ObjectWithGuid):
             connection_file = os.path.basename(ipykernel.get_connection_file())
             if 'kernel' in connection_file:
                 kernel_id = connection_file.split('-', 1)[1].split('.')[0]
-                self.properties['conf']['spark.yarn.appMasterEnv.HOPSWORKS_KERNEL_ID'] = 1
-                self.properties['conf']['spark.executorEnv.HOPSWORKS_KERNEL_ID'] = 1
+                self.properties['conf']['spark.yarn.appMasterEnv.HOPSWORKS_KERNEL_ID'] = kernel_id
+                self.properties['conf']['spark.executorEnv.HOPSWORKS_KERNEL_ID'] = kernel_id
                 if 'hops.util' in sys.modules:
                     util.attach_jupyter_configuration_to_notebook(kernel_id)
 
             self.properties['cert'] = {}
             material_directory = os.environ.get('MATERIAL_DIRECTORY')
             for filename in os.listdir(material_directory):
+                path = os.path.join(material_directory, filename)
                 if filename.endswith('.key'):
-                    with open(material_directory + '/' + filename, 'r') as f:
+                    with open(path, 'r') as f:
                         self.properties['cert'][filename] = f.read()
                 elif filename.endswith('.jks'):
-                    with open(material_directory + '/' + filename, 'rb') as f:
+                    with open(path, 'rb') as f:
                         base64_bytes = base64.b64encode(f.read())
                         base64_message = base64_bytes.decode('ascii')
                         self.properties['cert'][filename] = base64_message

@@ -108,3 +108,9 @@ LINEAR_RETRY = "linear"
 MIMETYPE_IMAGE_PNG = "image/png"
 MIMETYPE_TEXT_HTML = "text/html"
 MIMETYPE_TEXT_PLAIN = "text/plain"
+
+# Hops certificates
+MATERIAL_DIRECTORY = "MATERIAL_DIRECTORY"
+PASSWD_SUFFIX = "__cert.key"
+KEYSTORE_SUFFIX = "__kstore.jks"
+TRUSTSTORE_SUFFIX = "__tstore.jks"

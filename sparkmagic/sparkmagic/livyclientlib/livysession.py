@@ -150,17 +150,23 @@ class LivySession(ObjectWithGuid):
                     util.attach_jupyter_configuration_to_notebook(kernel_id)
 
             self.properties['cert'] = {}
-            material_directory = os.environ.get('MATERIAL_DIRECTORY')
-            for filename in os.listdir(material_directory):
-                path = os.path.join(material_directory, filename)
-                if filename.endswith('.key'):
-                    with open(path, 'r') as f:
-                        self.properties['cert'][filename] = f.read()
-                elif filename.endswith('.jks'):
-                    with open(path, 'rb') as f:
-                        base64_bytes = base64.b64encode(f.read())
-                        base64_message = base64_bytes.decode('ascii')
-                        self.properties['cert'][filename] = base64_message
+            material_directory = os.environ.get(constants.MATERIAL_DIRECTORY)
+            proxy_user = self.properties['proxyUser']
+
+            passwd_path = os.path.join(material_directory, proxy_user + constants.PASSWD_SUFFIX)
+            with open(passwd_path, 'r') as f:
+                    self.properties['cert'][proxy_user + constants.PASSWD_SUFFIX] = f.read()
+
+            certs_files = [
+                proxy_user + constants.KEYSTORE_SUFFIX,
+                proxy_user + constants.TRUSTSTORE_SUFFIX,
+            ]
+            for file in certs_files:
+                with open(os.path.join(material_directory, file), 'rb') as f:
+                    base64_bytes = base64.b64encode(f.read())
+                    # We need this otherwise python will fail serializing bytes
+                    base64_str = base64_bytes.decode('ascii')
+                    self.properties['cert'][file] = base64_str
 
             r = self._http_client.post_session(self.properties)
             self.id = r[u"id"]
